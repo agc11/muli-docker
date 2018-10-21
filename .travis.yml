@@ -3,7 +3,7 @@ services:
     -docker
 
 before_install:
-  -docker build -t agc11/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t agc11/react-test -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run agc11/react-test npm test -- --coverage
@@ -13,7 +13,7 @@ after_success:
   - docker build -t agc11/multi-nginx ./nginx
   - docker build -t agc11/multi-server ./server
   - docker build -t agc11/multi-worker ./worker
-  - docker login -u "$DOCKER_ID" -p "$DOCKER_PASS"
+  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push agc11/multi-client
   - docker push agc11/multi-nginx
   - docker push agc11/multi-server
